@@ -1,4 +1,4 @@
-#11353372 - Effah Paakwesi Aboagye
+# 11353372 - Effah Paakwesi Aboagye
 
 This React Native Shopping App extends the initial design to include detailed product information, a cart for selected items, and a drawer navigation menu.
 
