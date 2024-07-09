@@ -8,7 +8,9 @@ export default function Header() {
   return (
     <View style={styles.container}>
       <View style={styles.headerRow}>
-        <Image source={require('../assets/Menu.png')} onPress={() => navigation.navigate('Cart')}/>
+      <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+          <Image source={require('../assets/Menu.png')} />
+        </TouchableOpacity>
 
         <View style={styles.centeredLogo}>
           <Image source={require('../assets/Logo.png')} />
@@ -38,6 +40,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    marginTop: 30
   },
   headerRow: {
     flexDirection: 'row',

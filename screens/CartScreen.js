@@ -24,8 +24,28 @@ const CartScreen = ({ navigation }) => {
         await AsyncStorage.setItem('cart', JSON.stringify(updatedCart));
     };
 
+    const calculateTotal = () => {
+        return cartItems.reduce((sum, item) => sum + parseFloat(item.price), 0).toFixed(2);
+    };
+
+    const renderItem = ({ item }) => (
+        <View style={{ margin: 10, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flex: 1 }}>
+                <Image source={{ uri: String(item.image) }} style={{ width: 110, height: 150 }} />
+            </View>
+            <View style={{ flex: 2, marginLeft: 10 }}>
+                <Text>{item.title}</Text>
+                <Text>{item.category}</Text>
+                <Text style={{ color: "red", fontSize: 18 }}>${item.price}</Text>
+                <TouchableOpacity onPress={() => removeFromCart(item.id)} style={{ alignSelf: 'flex-end' }}>
+                    <Image source={require('../assets/remove.png')} />
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <View style={{ margin: 20, justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={require('../assets/Logo.png')} />
             </View>
@@ -34,32 +54,18 @@ const CartScreen = ({ navigation }) => {
             <FlatList
                 data={cartItems}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={({ item }) => (
-                    <View style={{ margin: 10, flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{ flex: 1 }}>
-                            <Image source={item.image} style={{ width: 110, height: 150 }} />
-                        </View>
-                        <View style={{ flex: 2, marginLeft: 10 }}>
-                            <Text>{item.name}</Text>
-                            <Text>{item.kind}</Text>
-                            <Text style={{ color: "red", fontSize: 18 }}>{item.price}</Text>
-                            <TouchableOpacity onPress={() => removeFromCart(item.id)} style={{ alignSelf: 'flex-end' }}>
-                                <Image source={require('../assets/remove.png')} />
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                )}
+                renderItem={renderItem}
             />
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
                 <Text style={{ fontSize: 24 }}>EST. TOTAL</Text>
-                <Text style={{ fontSize: 24, color: "red" }}>$360</Text>
+                <Text style={{ fontSize: 24, color: "red" }}>${calculateTotal()}</Text>
             </View>
-            <View style={{ backgroundColor: 'black', padding: 15, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+            <TouchableOpacity style={{ backgroundColor: 'black', padding: 15, flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Ionicons name="bag" size={24} color="white" />
                     <Text style={{ color: 'white', fontSize: 18, marginLeft: 10 }}>CHECKOUT</Text>
                 </View>
-            </View>
+            </TouchableOpacity>
         </View>
     );
 };
